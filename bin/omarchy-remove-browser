@@ -13,11 +13,11 @@ set_fallback_default_browser() {
     return
   fi
 
-  if omarchy-cmd-present chromium; then
-    xdg-settings set default-web-browser chromium.desktop
-    xdg-mime default chromium.desktop x-scheme-handler/http
-    xdg-mime default chromium.desktop x-scheme-handler/https
-    xdg-mime default chromium.desktop text/html
+  if omarchy-cmd-present brave; then
+    xdg-settings set default-web-browser brave-browser.desktop
+    xdg-mime default brave-browser.desktop x-scheme-handler/http
+    xdg-mime default brave-browser.desktop x-scheme-handler/https
+    xdg-mime default brave-browser.desktop text/html
   fi
 }
 

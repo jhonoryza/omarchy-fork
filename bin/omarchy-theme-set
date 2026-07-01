@@ -57,7 +57,6 @@ omarchy-restart-swayosd
 omarchy-restart-terminal
 omarchy-restart-hyprctl
 omarchy-restart-btop
-omarchy-restart-opencode
 omarchy-restart-mako
 omarchy-restart-helix
 
@@ -66,7 +65,6 @@ omarchy-theme-set-foot
 omarchy-theme-set-gnome
 omarchy-theme-set-browser
 omarchy-theme-set-vscode
-omarchy-theme-set-obsidian
 omarchy-theme-set-keyboard
 
 # Call hook on theme set

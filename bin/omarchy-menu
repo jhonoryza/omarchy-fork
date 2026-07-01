@@ -397,19 +397,16 @@ browser_desktop_exists() {
 
 show_setup_default_browser_menu() {
   local options=""
-  browser_desktop_exists chromium.desktop && options="$options  Chromium"
   browser_desktop_exists brave-browser.desktop && options="${options:+$options\n}󰖟  Brave"
   browser_desktop_exists brave-origin-beta.desktop && options="${options:+$options\n}󰖟  Brave Origin"
 
   local current=""
   case "$(omarchy-default-browser)" in
-  chromium) current="  Chromium" ;;
   brave) current="󰖟  Brave" ;;
   brave-origin) current="󰖟  Brave Origin" ;;
   esac
 
   case $(menu "Default Browser" "$options" "" "$current") in
-  *Chromium*) omarchy-default-browser chromium ;;
   *"Brave Origin"*) omarchy-default-browser brave-origin ;;
   *Brave*) omarchy-default-browser brave ;;
   *) show_setup_default_menu ;;
@@ -523,12 +520,11 @@ show_install_browser_menu() {
 }
 
 show_install_service_menu() {
-  case $(menu "Install" "  Tailscale\n󰏖  ONCE\n☀  Sunshine\n󰟵  Bitwarden\n  Chromium Account") in
+  case $(menu "Install" "  Tailscale\n󰏖  ONCE\n☀  Sunshine\n󰟵  Bitwarden") in
   *Tailscale*) present_terminal omarchy-install-tailscale ;;
   *ONCE*) present_terminal omarchy-install-once ;;
   *Sunshine*) present_terminal omarchy-install-service-sunshine ;;
   *Bitwarden*) install_and_launch "Bitwarden" "bitwarden bitwarden-cli" "bitwarden" ;;
-  *Chromium*) present_terminal omarchy-install-chromium-google-account ;;
   *) show_install_menu ;;
   esac
 }

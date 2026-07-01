@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# omarchy:summary=Apply the current theme color to Chromium, Chrome, Edge, and Brave
+# omarchy:summary=Apply the current theme color to Chrome, Edge, and Brave
 # omarchy:hidden=true
 
 CHROMIUM_THEME=~/.config/omarchy/current/theme/chromium.theme
@@ -29,9 +29,6 @@ refresh_running_browser() {
     "$command" --refresh-platform-policy --no-startup-window &>/dev/null
   fi
 }
-
-set_browser_policy /etc/chromium/policies/managed
-refresh_running_browser chromium chromium
 
 set_browser_policy /etc/opt/chrome/policies/managed
 refresh_running_browser chrome google-chrome-stable || refresh_running_browser chrome google-chrome

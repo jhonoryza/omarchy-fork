@@ -5,6 +5,10 @@ run_logged $OMARCHY_INSTALL/packaging/icons.sh
 run_logged $OMARCHY_INSTALL/packaging/webapps.sh
 run_logged $OMARCHY_INSTALL/packaging/tuis.sh
 run_logged $OMARCHY_INSTALL/packaging/npm.sh
+run_logged $OMARCHY_INSTALL/packaging/minio-client.sh
+run_logged $OMARCHY_INSTALL/packaging/antigravity.sh
+run_logged $OMARCHY_INSTALL/packaging/kimchi.sh
+run_logged $OMARCHY_INSTALL/packaging/sublime-merge.sh
 run_logged $OMARCHY_INSTALL/packaging/asus-rog.sh
 run_logged $OMARCHY_INSTALL/packaging/framework16.sh
 run_logged $OMARCHY_INSTALL/packaging/dell-xps-touchpad-haptics.sh

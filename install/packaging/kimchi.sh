@@ -1,0 +1,1 @@
+curl -fsSL https://github.com/getkimchi/kimchi/releases/latest/download/install.sh | bash

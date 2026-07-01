@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # omarchy:summary=Install a supported browser
-# omarchy:args=<chrome|brave|brave-origin|edge|firefox|zen>
-# omarchy:examples=omarchy install browser firefox | omarchy install browser brave
+# omarchy:args=<brave|brave-origin>
+# omarchy:examples=omarchy install browser brave | omarchy install browser brave-origin
 
 setup_policy_directory() {
   sudo mkdir -p "$1"
@@ -32,24 +32,6 @@ setup_firefox_wayland() {
 }
 
 case $1 in
-chrome)
-  echo "Installing Chrome..."
-  omarchy-pkg-aur-add google-chrome || exit 1
-
-  setup_policy_directory /etc/opt/chrome/policies/managed
-  copy_chromium_flags ~/.config/chrome-flags.conf
-  omarchy-theme-set-browser
-  announce_browser_installed "Chrome"
-  ;;
-edge)
-  echo "Installing Edge..."
-  omarchy-pkg-aur-add microsoft-edge-stable-bin || exit 1
-
-  setup_policy_directory /etc/opt/edge/policies/managed
-  copy_chromium_flags ~/.config/microsoft-edge-stable-flags.conf
-  omarchy-theme-set-browser
-  announce_browser_installed "Edge"
-  ;;
 brave)
   echo "Installing Brave..."
   omarchy-pkg-aur-add brave-bin || exit 1
@@ -70,24 +52,8 @@ brave-origin)
   omarchy-theme-set-browser
   announce_browser_installed "Brave Origin"
   ;;
-firefox)
-  echo "Installing Firefox..."
-  omarchy-pkg-add firefox || exit 1
-
-  setup_firefox_preferences /usr/lib/firefox/distribution
-  setup_firefox_wayland
-  announce_browser_installed "Firefox"
-  ;;
-zen)
-  echo "Installing Zen..."
-  omarchy-pkg-aur-add zen-browser-bin || exit 1
-
-  setup_firefox_preferences /opt/zen-browser/distribution
-  setup_firefox_wayland
-  announce_browser_installed "Zen"
-  ;;
 *)
-  echo "Usage: omarchy-install-browser <chrome|brave|brave-origin|edge|firefox|zen>"
+  echo "Usage: omarchy-install-browser <brave|brave-origin>"
   exit 1
   ;;
 esac

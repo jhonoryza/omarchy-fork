@@ -398,56 +398,38 @@ browser_desktop_exists() {
 show_setup_default_browser_menu() {
   local options=""
   browser_desktop_exists chromium.desktop && options="$options  Chromium"
-  browser_desktop_exists google-chrome.desktop && options="${options:+$options\n}󰊯  Chrome"
   browser_desktop_exists brave-browser.desktop && options="${options:+$options\n}󰖟  Brave"
   browser_desktop_exists brave-origin-beta.desktop && options="${options:+$options\n}󰖟  Brave Origin"
-  browser_desktop_exists microsoft-edge.desktop && options="${options:+$options\n}󰇩  Edge"
-  browser_desktop_exists firefox.desktop && options="${options:+$options\n}󰈹  Firefox"
-  browser_desktop_exists zen.desktop && options="${options:+$options\n}󰖟  Zen"
 
   local current=""
   case "$(omarchy-default-browser)" in
   chromium) current="  Chromium" ;;
-  chrome) current="󰊯  Chrome" ;;
   brave) current="󰖟  Brave" ;;
   brave-origin) current="󰖟  Brave Origin" ;;
-  edge) current="󰇩  Edge" ;;
-  firefox) current="󰈹  Firefox" ;;
-  zen) current="󰖟  Zen" ;;
   esac
 
   case $(menu "Default Browser" "$options" "" "$current") in
   *Chromium*) omarchy-default-browser chromium ;;
-  *Chrome*) omarchy-default-browser chrome ;;
   *"Brave Origin"*) omarchy-default-browser brave-origin ;;
   *Brave*) omarchy-default-browser brave ;;
-  *Edge*) omarchy-default-browser edge ;;
-  *Firefox*) omarchy-default-browser firefox ;;
-  *Zen*) omarchy-default-browser zen ;;
   *) show_setup_default_menu ;;
   esac
 }
 
 show_setup_default_terminal_menu() {
   local options=""
-  omarchy-cmd-present alacritty && options="$options  Alacritty"
-  omarchy-cmd-present foot && options="${options:+$options\n}  Foot"
+  omarchy-cmd-present foot && options="$options  Foot"
   omarchy-cmd-present ghostty && options="${options:+$options\n}  Ghostty"
-  omarchy-cmd-present kitty && options="${options:+$options\n}  Kitty"
 
   local current=""
   case "$(omarchy-default-terminal)" in
-  alacritty) current="  Alacritty" ;;
   foot) current="  Foot" ;;
   ghostty) current="  Ghostty" ;;
-  kitty) current="  Kitty" ;;
   esac
 
   case $(menu "Default Terminal" "$options" "" "$current") in
-  *Alacritty*) omarchy-default-terminal alacritty ;;
   *Foot*) omarchy-default-terminal foot ;;
   *Ghostty*) omarchy-default-terminal ghostty ;;
-  *Kitty*) omarchy-default-terminal kitty ;;
   *) show_setup_default_menu ;;
   esac
 }
@@ -455,35 +437,23 @@ show_setup_default_terminal_menu() {
 show_setup_default_editor_menu() {
   local options=""
   omarchy-cmd-present nvim && options="$options  Neovim"
-  omarchy-cmd-present code && options="${options:+$options\n}  VSCode"
-  omarchy-cmd-present cursor && options="${options:+$options\n}  Cursor"
   omarchy-cmd-present zeditor && options="${options:+$options\n}  Zed"
   omarchy-cmd-present sublime_text && options="${options:+$options\n}  Sublime Text"
-  omarchy-cmd-present helix && options="${options:+$options\n}  Helix"
   omarchy-cmd-present vim && options="${options:+$options\n}  Vim"
-  omarchy-cmd-present emacs && options="${options:+$options\n}  Emacs"
 
   local current=""
   case "$(omarchy-default-editor)" in
   nvim) current="  Neovim" ;;
-  code) current="  VSCode" ;;
-  cursor) current="  Cursor" ;;
   zed | zeditor) current="  Zed" ;;
   sublime_text) current="  Sublime Text" ;;
-  helix) current="  Helix" ;;
   vim) current="  Vim" ;;
-  emacs) current="  Emacs" ;;
   esac
 
   case $(menu "Default Editor" "$options" "" "$current") in
   *Neovim*) omarchy-default-editor nvim ;;
-  *VSCode*) omarchy-default-editor code ;;
-  *Cursor*) omarchy-default-editor cursor ;;
   *Zed*) omarchy-default-editor zed ;;
   *Sublime*) omarchy-default-editor sublime_text ;;
-  *Helix*) omarchy-default-editor helix ;;
   *Vim*) omarchy-default-editor vim ;;
-  *Emacs*) omarchy-default-editor emacs ;;
   *) show_setup_default_menu ;;
   esac
 }
@@ -545,22 +515,16 @@ show_install_menu() {
 }
 
 show_install_browser_menu() {
-  case $(menu "Install" "  Chrome\n  Edge\n  Brave\n  Brave Origin\n  Firefox\n󰖟  Zen") in
-  *Chrome*) present_terminal "omarchy-install-browser chrome" ;;
-  *Edge*) present_terminal "omarchy-install-browser edge" ;;
+  case $(menu "Install" "  Brave\n  Brave Origin") in
   *"Brave Origin"*) present_terminal "omarchy-install-browser brave-origin" ;;
   *Brave*) present_terminal "omarchy-install-browser brave" ;;
-  *Firefox*) present_terminal "omarchy-install-browser firefox" ;;
-  *Zen*) present_terminal "omarchy-install-browser zen" ;;
   *) show_install_menu ;;
   esac
 }
 
 show_install_service_menu() {
-  case $(menu "Install" "  Dropbox\n  Tailscale\n󱇱  NordVPN [AUR]\n󰏖  ONCE\n☀  Sunshine\n󰟵  Bitwarden\n  Chromium Account") in
-  *Dropbox*) present_terminal omarchy-install-dropbox ;;
+  case $(menu "Install" "  Tailscale\n󰏖  ONCE\n☀  Sunshine\n󰟵  Bitwarden\n  Chromium Account") in
   *Tailscale*) present_terminal omarchy-install-tailscale ;;
-  *NordVPN*) present_terminal omarchy-install-nordvpn ;;
   *ONCE*) present_terminal omarchy-install-once ;;
   *Sunshine*) present_terminal omarchy-install-service-sunshine ;;
   *Bitwarden*) install_and_launch "Bitwarden" "bitwarden bitwarden-cli" "bitwarden" ;;
@@ -570,56 +534,39 @@ show_install_service_menu() {
 }
 
 show_install_editor_menu() {
-  case $(menu "Install" "  VSCode\n  Cursor\n  Zed\n  Sublime Text\n  Helix\n  Vim\n  Emacs") in
-  *VSCode*) present_terminal omarchy-install-vscode ;;
-  *Cursor*) install_and_launch "Cursor" "cursor-bin" "cursor" ;;
+  case $(menu "Install" "  Zed\n  Sublime Text\n  Vim") in
   *Zed*) present_terminal omarchy-install-zed ;;
   *Sublime*) install_and_launch "Sublime Text" "sublime-text-4" "sublime_text" ;;
-  *Helix*) present_terminal omarchy-install-helix ;;
   *Vim*) install "Vim" "vim" ;;
-  *Emacs*) install "Emacs" "emacs-wayland" && systemctl --user enable --now emacs.service ;;
   *) show_install_menu ;;
   esac
 }
 
 show_install_terminal_menu() {
-  case $(menu "Install" "  Alacritty\n  Foot\n  Ghostty\n  Kitty") in
-  *Alacritty*) install_terminal "alacritty" ;;
+  case $(menu "Install" "  Foot\n  Ghostty") in
   *Foot*) install_terminal "foot" ;;
   *Ghostty*) install_terminal "ghostty" ;;
-  *Kitty*) install_terminal "kitty" ;;
   *) show_install_menu ;;
   esac
 }
 
 show_install_ai_menu() {
-  ollama_pkg=$(
-    (omarchy-cmd-present nvidia-smi && echo ollama-cuda) ||
-      (omarchy-cmd-present rocminfo && echo ollama-rocm) ||
-      echo ollama
-  )
-
-  case $(menu "Install" "  Dictation\n󱚤  LM Studio\n󱚤  Ollama\n󱚤  Crush") in
+  case $(menu "Install" "  Dictation\n󱚤  LM Studio\n󱚤  Crush") in
   *Dictation*) present_terminal omarchy-voxtype-install ;;
   *Studio*) install "LM Studio" "lmstudio-bin" ;;
-  *Ollama*) install "Ollama" $ollama_pkg ;;
   *Crush*) install "Crush" "crush-bin" ;;
   *) show_install_menu ;;
   esac
 }
 
 show_install_gaming_menu() {
-  case $(menu "Install" "  Steam\n󰯉  RetroArch\n󰍳  Minecraft\n󰢹  NVIDIA GeForce NOW\n  Xbox Cloud Gaming\n󰂯  Xbox Controller\n󰍹  Moonlight (GameStream)\n  Lutris (Battle.net)\n󱓟  Heroic (Epic Games)\n󰯉  RetroArch Game Launcher") in
+  case $(menu "Install" "  Steam\n󰯉  RetroArch\n󰢹  NVIDIA GeForce NOW\n  Xbox Cloud Gaming\n󰂯  Xbox Controller\n󰯉  RetroArch Game Launcher") in
   *Steam*) present_terminal omarchy-install-gaming-steam ;;
   *"RetroArch Game Launcher"*) omarchy-games-retro-install ;;
   *RetroArch*) present_terminal omarchy-install-gaming-retroarch ;;
-  *Minecraft*) install_and_launch "Minecraft" "minecraft-launcher" "minecraft-launcher" ;;
   *GeForce*) present_terminal omarchy-install-gaming-geforce-now ;;
   *"Xbox Cloud"*) present_terminal omarchy-install-gaming-xbox-cloud ;;
   *Xbox*) present_terminal omarchy-install-gaming-xbox-controllers ;;
-  *Lutris*) present_terminal omarchy-install-gaming-lutris ;;
-  *Heroic*) present_terminal omarchy-install-gaming-heroic ;;
-  *Moonlight*) present_terminal omarchy-install-gaming-moonlight ;;
   *) show_install_menu ;;
   esac
 }
@@ -717,28 +664,20 @@ show_remove_security_menu() {
 }
 
 show_remove_browser_menu() {
-  case $(menu "Remove" "  Chrome\n  Edge\n  Brave\n  Brave Origin\n  Firefox\n  Zen") in
-  *Chrome*) present_terminal "omarchy-remove-browser chrome" ;;
-  *Edge*) present_terminal "omarchy-remove-browser edge" ;;
+  case $(menu "Remove" "  Brave\n  Brave Origin") in
   *"Brave Origin"*) present_terminal "omarchy-remove-browser brave-origin" ;;
   *Brave*) present_terminal "omarchy-remove-browser brave" ;;
-  *Firefox*) present_terminal "omarchy-remove-browser firefox" ;;
-  *Zen*) present_terminal "omarchy-remove-browser zen" ;;
   *) show_remove_menu ;;
   esac
 }
 
 show_remove_gaming_menu() {
-  case $(menu "Remove" "  Steam\n  RetroArch\n󰍳  Minecraft\n󰢹  NVIDIA GeForce NOW\n  Xbox Cloud Gaming\n󰖺  Xbox Controller (󰂯)\n󰍹  Moonlight (GameStream)\n  Lutris (Battle.net)\n󱓟  Heroic (Epic Games)") in
+  case $(menu "Remove" "  Steam\n  RetroArch\n󰢹  NVIDIA GeForce NOW\n  Xbox Cloud Gaming\n󰖺  Xbox Controller (󰂯)") in
   *Steam*) present_terminal omarchy-remove-gaming-steam ;;
   *RetroArch*) present_terminal omarchy-remove-gaming-retroarch ;;
-  *Minecraft*) present_terminal omarchy-remove-gaming-minecraft ;;
   *GeForce*) present_terminal omarchy-remove-gaming-geforce-now ;;
   *"Xbox Cloud"*) present_terminal omarchy-remove-gaming-xbox-cloud ;;
   *Xbox*) present_terminal omarchy-remove-gaming-xbox-controllers ;;
-  *Moonlight*) present_terminal omarchy-remove-gaming-moonlight ;;
-  *Lutris*) present_terminal omarchy-remove-gaming-lutris ;;
-  *Heroic*) present_terminal omarchy-remove-gaming-heroic ;;
   *) show_remove_menu ;;
   esac
 }

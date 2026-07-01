@@ -1,2 +1,1 @@
-# Includes lazyvim and the themes
-omarchy-nvim-setup
+git clone https://github.com/jhonoryza/nvim.git ~/.config/nvim 2>/dev/null || true

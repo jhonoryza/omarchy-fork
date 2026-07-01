@@ -15,6 +15,11 @@ xdg-mime default imv.desktop image/tiff
 # Open PDFs with the Document Viewer
 xdg-mime default org.gnome.Evince.desktop application/pdf
 
+# Set Brave as the default browser
+xdg-settings set default-web-browser brave-browser.desktop
+xdg-mime default brave-browser.desktop x-scheme-handler/http
+xdg-mime default brave-browser.desktop x-scheme-handler/https
+
 # Open video files with mpv
 xdg-mime default mpv.desktop video/mp4
 xdg-mime default mpv.desktop video/x-msvideo

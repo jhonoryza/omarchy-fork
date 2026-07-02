@@ -1,0 +1,167 @@
+{
+  "archinstall-language": "English",
+  "audio_config": {
+    "audio": "pipewire"
+  },
+  "bootloader_config": {
+    "bootloader": "Limine",
+    "uki": false,
+    "removable": false
+  },
+  "debug": false,
+  "disk_config": {
+    "config_type": "default_layout",
+    "device_modifications": [
+      {
+        "device": "/dev/sda",
+        "partitions": [
+          {
+            "btrfs": [],
+            "flags": ["boot"],
+            "fs_type": "fat32",
+            "size": {
+              "sector_size": null,
+              "unit": "MiB",
+              "value": 512
+            },
+            "mount_options": [],
+            "mountpoint": "/boot",
+            "obj_id": "efi-part",
+            "start": {
+              "sector_size": null,
+              "unit": "MiB",
+              "value": 1
+            },
+            "status": "create",
+            "type": "primary"
+          },
+          {
+            "btrfs": [],
+            "flags": [],
+            "fs_type": "btrfs",
+            "size": {
+              "sector_size": null,
+              "unit": "Percent",
+              "value": 100
+            },
+            "mount_options": [],
+            "mountpoint": "/",
+            "obj_id": "root-part",
+            "start": {
+              "sector_size": null,
+              "unit": "MiB",
+              "value": 513
+            },
+            "status": "create",
+            "type": "primary"
+          }
+        ],
+        "wipe": true
+      }
+    ]
+  },
+  "hostname": "archlinux",
+  "kernels": ["linux"],
+  "locale_config": {
+    "kb_layout": "us",
+    "sys_enc": "UTF-8",
+    "sys_lang": "en_US"
+  },
+  "mirror_config": {
+    "mirror_regions": {
+      "Indonesia": ["https://mirror.omarchy.org/$repo/os/$arch"],
+      "Singapore": ["https://mirror.sg.archlinux.org/$repo/os/$arch"]
+    },
+    "optional_repositories": ["multilib"]
+  },
+  "network_config": {
+    "type": "use_networkmanager"
+  },
+  "no_pkg_lookups": false,
+  "ntp": true,
+  "offline": false,
+  "packages": [
+    "base-devel",
+    "git",
+    "curl",
+    "openssh",
+    "sudo",
+    "neovim",
+    "foot",
+    "brave-bin",
+    "vlc",
+    "sublime-text-4",
+    "sublime-merge",
+    "ghostty",
+    "tmux",
+    "btop",
+    "fastfetch",
+    "starship",
+    "gum",
+    "cmake",
+    "make",
+    "cups",
+    "scrcpy",
+    "go",
+    "rustup",
+    "php",
+    "jdk-openjdk",
+    "ffmpeg",
+    "zip",
+    "clang",
+    "bash-completion",
+    "docker",
+    "docker-compose-plugin",
+    "github-cli",
+    "lazydocker",
+    "nodejs",
+    "npm",
+    "wireless_tools",
+    "wpa_supplicant",
+    "networkmanager",
+    "pipewire",
+    "pipewire-alsa",
+    "pipewire-pulse",
+    "wireplumber",
+    "xdg-desktop-portal",
+    "xdg-desktop-portal-hyprland",
+    "hyprland",
+    "swappy",
+    "grim",
+    "slurp",
+    "brightnessctl",
+    "pavucontrol"
+  ],
+  "custom_commands": [
+    "git clone https://github.com/jhonoryza/nvim.git /home/fajar/.config/nvim && chown -R fajar:fajar /home/fajar/.config/nvim",
+    "curl -fsSL https://antigravity.google/cli/install.sh | bash",
+    "curl -fsSL https://github.com/getkimchi/kimchi/releases/latest/download/install.sh | bash",
+    "curl -fsSL https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/local/bin/mc && chmod +x /usr/local/bin/mc",
+    "su - fajar -c \"curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash\"",
+    "su - fajar -c \"source ~/.bashrc && nvm install --lts && npm install -g opencode-ai playwright wrangler netlify-cli @mimo-ai/cli cline freebuff @anthropic-ai/claude-code @gitlawb/openclaude\"",
+    "curl -fsSL https://kilo.ai/cli/install | bash",
+    "curl -fsSL https://mimo.xiaomi.com/install | bash",
+    "su - fajar -c \"curl -fsSL https://bun.sh/install | bash\"",
+    "su - fajar -c \"curl -fsSL https://deno.land/install.sh | bash\""
+  ],
+  "pacman_config": {
+    "color": true,
+    "parallel_downloads": 10
+  },
+  "profile_config": {
+    "gfx_driver": "All open-source (default)",
+    "greeter": null,
+    "profile": {
+      "details": [],
+      "main": "minimal"
+    }
+  },
+  "script": "guided",
+  "silent": false,
+  "swap": {
+    "enabled": true,
+    "algorithm": "zstd"
+  },
+  "timezone": "Asia/Jakarta",
+  "version": "2.8.6"
+}

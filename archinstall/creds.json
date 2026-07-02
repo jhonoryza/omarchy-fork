@@ -1,0 +1,10 @@
+{
+  "users": [
+    {
+      "sudo": true,
+      "username": "fajar",
+      "enc_password": "$6$rounds=100000$REPLACE_WITH_HASH$REPLACE_WITH_HASH"
+    }
+  ],
+  "root_enc_password": "$6$rounds=100000$REPLACE_WITH_HASH$REPLACE_WITH_HASH"
+}

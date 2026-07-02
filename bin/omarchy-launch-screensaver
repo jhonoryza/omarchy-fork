@@ -34,9 +34,6 @@ for m in $(hyprctl monitors -j | jq -r '.[] | .name'); do
   hypr_focus_monitor "$m"
 
   case $terminal in
-  *Alacritty*)
-    hypr_exec "alacritty --class=org.omarchy.screensaver --config-file ~/.local/share/omarchy/default/alacritty/screensaver.toml -e omarchy-screensaver"
-    ;;
   *ghostty*)
     hypr_exec "ghostty --class=org.omarchy.screensaver --config-file=~/.local/share/omarchy/default/ghostty/screensaver --font-size=18 -e omarchy-screensaver"
     ;;

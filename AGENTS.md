@@ -69,3 +69,6 @@ bash test/omarchy-cli-test.sh
 - [install/](install/AGENTS.md) — Installation framework, stages, sourcing, and hardware configs
 - [migrations/](migrations/AGENTS.md) — User migration scripts and format
 - [themes/](themes/AGENTS.md) — Theme color definitions, backgrounds, and per-app overrides
+- [archinstall/](archinstall/README.md) — Archinstall config + creds for unattended Arch install
+- [arch-setup.sh](arch-setup.sh) — Live USB Arch setup: disk, pacstrap, Limine, user creation
+- [arch-firstboot.sh](arch-firstboot.sh) — First-boot script: clone repo, run install.sh

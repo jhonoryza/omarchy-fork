@@ -1,6 +1,6 @@
 # Purpose
 
-System installation framework. Scripts under `install/` are sourced during `install.sh` and `boot.sh` to set up Omarchy on a fresh Arch system.
+System installation framework. Scripts under `install/` are sourced during `install.sh` to set up Omarchy on a fresh Arch system. For unattended Arch installs before Omarchy, see `archinstall/` and `arch-setup.sh`.
 
 # Ownership
 
@@ -8,6 +8,8 @@ System installation framework. Scripts under `install/` are sourced during `inst
 - Helper infrastructure: `helpers/chroot.sh`, `helpers/logging.sh`, `helpers/errors.sh`, `helpers/presentation.sh`
 - Package lists: `omarchy-base.packages`, `omarchy-other.packages`
 - Hardware-specific configuration under `config/hardware/`
+- Custom package scripts under `packaging/` (minio, antigravity, kimchi, nvim, sublime-merge, npm, tuis)
+- Web app packaging removed in favor of runtime webapp launchers
 
 # Local Contracts
 
@@ -24,6 +26,16 @@ System installation framework. Scripts under `install/` are sourced during `inst
 ## Stage ordering
 
 Install stages run in order: `preflight` → `packaging` → `config` → `login` → `post-install`. `first-run/` scripts run on first boot after install.
+
+## Packaging layout
+
+`install/packaging/all.sh` lists scripts in execution order:
+- `base.sh` — core packages from `omarchy-base.packages`
+- `fonts.sh`, `nvim.sh`, `icons.sh`, `tuis.sh`, `npm.sh`
+- Custom tools: `minio-client.sh`, `antigravity.sh`, `kimchi.sh`, `sublime-merge.sh`
+- Hardware: `asus-rog.sh`, `framework16.sh`, `dell-xps-touchpad-haptics.sh`, `surface.sh`
+
+Web apps are no longer installed via `webapps.sh`; use runtime launchers instead.
 
 ## Adding a new config script
 

@@ -3,7 +3,7 @@ name: omarchy
 description: >
   REQUIRED for end-user customization of Linux desktop, window manager, or system config.
   Use when editing ~/.config/hypr/, ~/.config/waybar/, ~/.config/walker/,
-  ~/.config/alacritty/, ~/.config/foot/, ~/.config/kitty/, ~/.config/ghostty/, ~/.config/mako/,
+  ~/.config/foot/, ~/.config/kitty/, ~/.config/ghostty/, ~/.config/mako/,
   or ~/.config/omarchy/. Triggers: Hyprland, window rules, animations, keybindings,
   monitors, gaps, borders, blur, opacity, waybar, walker, terminal config, themes,
   background, night light, idle, lock screen, screenshots, reminders, layer rules,
@@ -24,7 +24,7 @@ It is not for contributing to Omarchy source code.
 
 - Editing ANY file in `~/.config/hypr/` (window rules, animations, keybindings, monitors, etc.)
 - Editing ANY file in `~/.config/waybar/`, `~/.config/walker/`, `~/.config/mako/`
-- Editing terminal configs (alacritty, foot, kitty, ghostty)
+- Editing terminal configs (foot, kitty, ghostty)
 - Editing ANY file in `~/.config/omarchy/`
 - Window behavior, animations, opacity, blur, gaps, borders
 - Layer rules, workspace settings, display/monitor configuration
@@ -163,7 +163,6 @@ Run `omarchy --help` for the full list. The most common groups:
 ### Terminals
 
 ```
-~/.config/alacritty/alacritty.toml
 ~/.config/foot/foot.ini
 ~/.config/kitty/kitty.conf
 ~/.config/ghostty/config

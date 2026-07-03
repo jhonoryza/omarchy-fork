@@ -171,8 +171,7 @@ mount -o "${BTRFS_OPTS},subvol=@snapshots" "$ROOT_PART" /mnt/.snapshots
 mount -o "${BTRFS_OPTS},subvol=@var_log"   "$ROOT_PART" /mnt/var/log
 
 if [[ $BOOT_MODE == "uefi" ]]; then
-  mkdir -p /mnt/boot/efi
-  mount "$EFI_PART" /mnt/boot/efi
+  mount "$EFI_PART" /mnt/boot
 fi
 
 success "Partisi selesai di-mount"
@@ -258,29 +257,33 @@ systemctl enable sshd
 # ── Limine bootloader ──────────────────────────────────────────────────────
 ROOT_UUID=$(blkid -s UUID -o value "$ROOT_PART")
 
-if [[ $BOOT_MODE == "uefi" ]]; then
-  # Install Limine UEFI
-  mkdir -p /boot/efi/EFI/BOOT
-  cp /usr/share/limine/BOOTX64.EFI /boot/efi/EFI/BOOT/BOOTX64.EFI
+# Set Btrfs default subvolume to @ so Limine can find kernel/initramfs without subvol hint
+SUBVOL_ID=$(btrfs subvolume list / | awk '$NF == "@" {print $2}')
+btrfs subvolume set-default "$SUBVOL_ID" /
 
-  # Limine looks for config at <EFI app path>/limine.conf on ESP for UEFI
-  cat > /boot/efi/EFI/BOOT/limine.conf << EOF
+if [[ $BOOT_MODE == "uefi" ]]; then
+  # ESP is mounted at /boot; kernel/initramfs are installed there by pacman
+  # boot() in Limine refers to the ESP, so paths are relative to ESP root (no /boot/ prefix)
+  mkdir -p /boot/EFI/BOOT
+  cp /usr/share/limine/BOOTX64.EFI /boot/EFI/BOOT/BOOTX64.EFI
+
+  cat > /boot/EFI/BOOT/limine.conf << EOF
 timeout: 3
 default_entry: 1
 
 /Arch Linux
   protocol: linux
-  kernel_path: boot():/boot/vmlinuz-linux
+  kernel_path: boot():/vmlinuz-linux
   cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@ quiet splash
-  module_path: boot():/boot/initramfs-linux.img
-  module_path: boot():/boot/intel-ucode.img
-  module_path: boot():/boot/amd-ucode.img
+  module_path: boot():/initramfs-linux.img
+  module_path: boot():/intel-ucode.img
+  module_path: boot():/amd-ucode.img
 
 /Arch Linux (fallback)
   protocol: linux
-  kernel_path: boot():/boot/vmlinuz-linux
-  cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@ 
-  module_path: boot():/boot/initramfs-linux-fallback.img
+  kernel_path: boot():/vmlinuz-linux
+  cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@
+  module_path: boot():/initramfs-linux-fallback.img
 EOF
 
   # Register UEFI boot entry
@@ -288,11 +291,11 @@ EOF
     --create --label "Limine" \
     --loader "\\EFI\\BOOT\\BOOTX64.EFI" 2>/dev/null || true
 else
-  # Install Limine BIOS
+  # BIOS: Limine stage2 on MBR; config + kernel read from root Btrfs partition
+  # Default subvolume is now @ so boot():/boot/vmlinuz-linux resolves correctly
   limine bios-install "$TARGET_DISK"
   cp /usr/share/limine/limine-bios.sys /boot/
 
-  # Limine config for BIOS (scanned from root partition)
   mkdir -p /boot/limine
   cat > /boot/limine/limine.conf << EOF
 timeout: 3
@@ -309,7 +312,7 @@ default_entry: 1
 /Arch Linux (fallback)
   protocol: linux
   kernel_path: boot():/boot/vmlinuz-linux
-  cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@ 
+  cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@
   module_path: boot():/boot/initramfs-linux-fallback.img
 EOF
 fi

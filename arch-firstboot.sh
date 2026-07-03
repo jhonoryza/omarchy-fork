@@ -35,13 +35,13 @@ echo ""
 
 # ── Cek internet ─────────────────────────────────────────────────────────────
 info "Cek koneksi internet ..."
-if ! ping -c 1 archlinux.org &>/dev/null; then
+if ! curl --silent --max-time 5 -o /dev/null https://archlinux.org; then
   warn "Tidak ada koneksi internet. Coba connect dulu:"
   echo "  nmcli device wifi connect <SSID> password <password>"
   echo "  atau: nmtui"
   echo ""
   read -rp "Tekan Enter setelah internet tersambung ..."
-  ping -c 1 archlinux.org &>/dev/null || die "Masih tidak ada internet"
+  curl --silent --max-time 10 -o /dev/null https://archlinux.org || die "Masih tidak ada internet"
 fi
 success "Internet OK"
 
@@ -79,11 +79,6 @@ echo "Proses ini bisa memakan waktu 20-60 menit tergantung koneksi."
 echo ""
 read -rp "Jalankan install.sh sekarang? (ya/tidak): " run_install
 [[ $run_install == "ya" ]] || { info "Jalankan manual: bash ~/.local/share/omarchy/install.sh"; exit 0; }
-
-export OMARCHY_PATH="$HOME/.local/share/omarchy"
-export OMARCHY_INSTALL="$OMARCHY_PATH/install"
-export OMARCHY_INSTALL_LOG_FILE="/var/log/omarchy-install.log"
-export PATH="$OMARCHY_PATH/bin:$PATH"
 
 info "Menjalankan install.sh ..."
 bash "$OMARCHY_PATH/install.sh"

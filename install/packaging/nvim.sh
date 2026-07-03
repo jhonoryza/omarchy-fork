@@ -1,1 +1,3 @@
-git clone https://github.com/jhonoryza/nvim.git ~/.config/nvim 2>/dev/null || true
+if [[ ! -d ~/.config/nvim ]]; then
+  git clone https://github.com/jhonoryza/nvim.git ~/.config/nvim
+fi

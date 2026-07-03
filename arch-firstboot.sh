@@ -40,7 +40,7 @@ if ! curl --silent --max-time 5 -o /dev/null https://archlinux.org; then
   echo "  nmcli device wifi connect <SSID> password <password>"
   echo "  atau: nmtui"
   echo ""
-  read -rp "Tekan Enter setelah internet tersambung ..."
+  read -rp "Tekan Enter setelah internet tersambung ..." || true
   curl --silent --max-time 10 -o /dev/null https://archlinux.org || die "Masih tidak ada internet"
 fi
 success "Internet OK"
@@ -53,11 +53,12 @@ OMARCHY_PATH="$HOME/.local/share/omarchy"
 
 if [[ -d $OMARCHY_PATH ]]; then
   warn "Directory $OMARCHY_PATH sudah ada"
-  read -rp "Hapus dan clone ulang? (y/n, default: y): " reclone
+  read -rp "Hapus dan clone ulang? (y/n, default: y): " reclone || true
   reclone="${reclone:-y}"
   if [[ $reclone == "y" ]]; then
     rm -rf "$OMARCHY_PATH"
   else
+    [[ -f "$OMARCHY_PATH/install.sh" ]] || die "Repo di $OMARCHY_PATH tidak lengkap. Hapus dan clone ulang."
     info "Pakai repo yang sudah ada"
   fi
 fi
@@ -77,8 +78,10 @@ echo ""
 echo "Ini akan menginstall Omarchy (Hyprland + semua paket)."
 echo "Proses ini bisa memakan waktu 20-60 menit tergantung koneksi."
 echo ""
-read -rp "Jalankan install.sh sekarang? (ya/tidak): " run_install
-[[ $run_install == "ya" ]] || { info "Jalankan manual: bash ~/.local/share/omarchy/install.sh"; exit 0; }
+read -rp "Jalankan install.sh sekarang? (ya/tidak): " run_install || true
+[[ $run_install == "ya" || $run_install == "y" ]] || { info "Jalankan manual: bash ~/.local/share/omarchy/install.sh"; exit 0; }
+
+export OMARCHY_ONLINE_INSTALL=true
 
 info "Menjalankan install.sh ..."
 bash "$OMARCHY_PATH/install.sh"

@@ -120,6 +120,9 @@ if [[ $BOOT_MODE == "uefi" ]]; then
     set 1 esp on \
     mkpart primary btrfs 513MiB 100%
 
+  partprobe "$TARGET_DISK"
+  udevadm settle
+
   # Tentukan nama partisi (nvme pakai p1/p2, sata pakai 1/2)
   if [[ $TARGET_DISK == *nvme* ]]; then
     EFI_PART="${TARGET_DISK}p1"
@@ -138,6 +141,9 @@ else
     mklabel msdos \
     mkpart primary btrfs 2MiB 100% \
     set 1 boot on
+
+  partprobe "$TARGET_DISK"
+  udevadm settle
 
   if [[ $TARGET_DISK == *nvme* ]]; then
     ROOT_PART="${TARGET_DISK}p1"
@@ -186,7 +192,7 @@ pacstrap -K /mnt \
   base base-devel linux linux-headers linux-firmware \
   btrfs-progs \
   networkmanager \
-  git openssh \
+  git openssh curl \
   sudo vim \
   gum \
   limine \
@@ -243,9 +249,11 @@ echo "$USERNAME:$USER_PASS" | chpasswd
 
 # Sudo (wheel group)
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+grep -q '^%wheel ALL=(ALL:ALL) ALL' /etc/sudoers || { echo "ERROR: sudoers wheel line tidak ditemukan" >&2; exit 1; }
 
 # mkinitcpio dengan btrfs
-sed -i 's/^MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
+grep -q '\bbtrfs\b' /etc/mkinitcpio.conf || \
+  sed -i '/^MODULES=/ s/)$/ btrfs)/' /etc/mkinitcpio.conf
 mkinitcpio -P
 
 # Enable NetworkManager
@@ -259,6 +267,7 @@ ROOT_UUID=$(blkid -s UUID -o value "$ROOT_PART")
 
 # Set Btrfs default subvolume to @ so Limine can find kernel/initramfs without subvol hint
 SUBVOL_ID=$(btrfs subvolume list / | awk '$NF == "@" {print $2}')
+[[ -n $SUBVOL_ID ]] || { echo "ERROR: tidak bisa menemukan subvolume @" >&2; exit 1; }
 btrfs subvolume set-default "$SUBVOL_ID" /
 
 if [[ $BOOT_MODE == "uefi" ]]; then

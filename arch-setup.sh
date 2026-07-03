@@ -263,6 +263,26 @@ if [[ $BOOT_MODE == "uefi" ]]; then
   mkdir -p /boot/efi/EFI/BOOT
   cp /usr/share/limine/BOOTX64.EFI /boot/efi/EFI/BOOT/BOOTX64.EFI
 
+  # Limine looks for config at <EFI app path>/limine.conf on ESP for UEFI
+  cat > /boot/efi/EFI/BOOT/limine.conf << EOF
+timeout: 3
+default_entry: 1
+
+/Arch Linux
+  protocol: linux
+  kernel_path: boot():/boot/vmlinuz-linux
+  cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@ quiet splash
+  module_path: boot():/boot/initramfs-linux.img
+  module_path: boot():/boot/intel-ucode.img
+  module_path: boot():/boot/amd-ucode.img
+
+/Arch Linux (fallback)
+  protocol: linux
+  kernel_path: boot():/boot/vmlinuz-linux
+  cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@ 
+  module_path: boot():/boot/initramfs-linux-fallback.img
+EOF
+
   # Register UEFI boot entry
   efibootmgr --disk "$TARGET_DISK" --part 1 \
     --create --label "Limine" \
@@ -271,28 +291,28 @@ else
   # Install Limine BIOS
   limine bios-install "$TARGET_DISK"
   cp /usr/share/limine/limine-bios.sys /boot/
-fi
 
-# Limine config
-mkdir -p /boot/limine
-cat > /boot/limine/limine.conf << EOF
+  # Limine config for BIOS (scanned from root partition)
+  mkdir -p /boot/limine
+  cat > /boot/limine/limine.conf << EOF
 timeout: 3
 default_entry: 1
 
 /Arch Linux
-    protocol: linux
-    kernel_path: boot():/boot/vmlinuz-linux
-    cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@ quiet splash
-    module_path: boot():/boot/initramfs-linux.img
-    module_path: boot():/boot/intel-ucode.img
-    module_path: boot():/boot/amd-ucode.img
+  protocol: linux
+  kernel_path: boot():/boot/vmlinuz-linux
+  cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@ quiet splash
+  module_path: boot():/boot/initramfs-linux.img
+  module_path: boot():/boot/intel-ucode.img
+  module_path: boot():/boot/amd-ucode.img
 
 /Arch Linux (fallback)
-    protocol: linux
-    kernel_path: boot():/boot/vmlinuz-linux
-    cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@ 
-    module_path: boot():/boot/initramfs-linux-fallback.img
+  protocol: linux
+  kernel_path: boot():/boot/vmlinuz-linux
+  cmdline: root=UUID=$ROOT_UUID rw rootflags=subvol=@ 
+  module_path: boot():/boot/initramfs-linux-fallback.img
 EOF
+fi
 
 echo "Chroot konfigurasi selesai"
 CHROOT
